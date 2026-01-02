@@ -147,8 +147,12 @@ class RoleController extends Controller
     public function destroy(string $id)
     {
         $role = Role::findOrFail($id);
-        $role->delete();
         
-        return redirect()->route('roles.index')->with('message', 'Rol eliminado exitosamente');
+        try {
+            $role->delete();
+            return redirect()->route('roles.index')->with('message', 'Rol eliminado exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->route('roles.index')->with('error', 'No se puede eliminar el rol, está en uso.');
+        }
     }
 }

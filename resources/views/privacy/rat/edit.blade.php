@@ -1,19 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Editar RAT')
+@section('title', 'Editar Actividad de Tratamiento - SGPD COAC')
 @section('active_key', 'rat')
+@section('h1', 'Editar Actividad de Tratamiento')
+@section('subtitle', 'Modificar actividad en el Registro de Actividades de Tratamiento (RAT)')
 
 @section('content')
-<div class="bg-white border rounded p-5">
-    <h2 class="text-lg font-bold mb-4">Editar Actividad de Tratamiento</h2>
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <form method="POST"
+              action="{{ route('rat.update', $activity->pa_id) }}"
+              id="ratForm">
+            @csrf
+            @method('PUT')
 
-    <form method="POST"
-          action="{{ route('rat.update', $activity->pa_id) }}"
-          id="ratForm">
-        @csrf
-        @method('PUT')
-
-        <div x-data="{ tab: 'details' }">
+            <div x-data="{ tab: 'details' }">
 
             {{-- TABS --}}
             <div class="flex border-b mb-4">
@@ -422,4 +423,28 @@ $(function () {
 
 });
 </script>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            confirmButtonText: 'Aceptar',
+            timer: 3000,
+            timerProgressBar: true
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
 @endsection

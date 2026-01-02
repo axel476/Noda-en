@@ -133,14 +133,23 @@ class DataStoreController extends Controller
     public function destroy($id)
     {
         $dataStore = DataStore::findOrFail($id);
-        $dataStore->delete();
-
-        return redirect()
-            ->route('data-stores.index')
-            ->with([
-                'alert' => 'deleted',
-                'message' => 'El almacén de datos fue eliminado correctamente.'
-            ]);
+        
+        try {
+            $dataStore->delete();
+            return redirect()
+                ->route('data-stores.index')
+                ->with([
+                    'alert' => 'deleted',
+                    'message' => 'El almacén de datos fue eliminado correctamente.'
+                ]);
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('data-stores.index')
+                ->with([
+                    'alert' => 'error',
+                    'message' => 'No se puede eliminar el almacén de datos, está en uso.'
+                ]);
+        }
     }
 }
 

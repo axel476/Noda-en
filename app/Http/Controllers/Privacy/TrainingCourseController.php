@@ -79,11 +79,16 @@ class TrainingCourseController extends Controller
     {
         $this->authorizeCourse($course);
 
-        $course->delete();
-
-        return redirect()
-            ->route('training.courses.index')
-            ->with('success', 'Curso eliminado correctamente');
+        try {
+            $course->delete();
+            return redirect()
+                ->route('training.courses.index')
+                ->with('success', 'Curso eliminado correctamente');
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('training.courses.index')
+                ->with('error', 'No se puede eliminar el curso, está en uso por asignaciones.');
+        }
     }
 
     /**

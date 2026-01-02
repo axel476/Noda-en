@@ -14,6 +14,9 @@
 
 <!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -86,7 +89,15 @@
         [
             'label' => 'PRIVACY',
             'items' => [
-                ['label' => 'Catálogos (Base)', 'href' => '#', 'key' => 'privacy_catalogs'],
+                [
+                    'label' => 'Catálogos (Base)',
+                    'href' => "#",
+                    'key' => 'privacy_catalogs',
+                    'submenu' => [
+                        ['label' => 'Categorías de Datos', 'href' => route('privacy.data_category.index'), 'key' => 'data_category'],
+                        ['label' => 'Países', 'href' => route('privacy.countries.index'), 'key' => 'countries'],
+                    ],
+                ],
                 ['label' => 'Sistemas / Data Stores', 'href' => route('systems.index'), 'key' => 'systems'],
                 ['label' => 'Destinatarios', 'href' => route('recipients.index'), 'key' => 'recipients'],
                 ['label' => 'RAT: Actividades de Tratamiento', 'href' => route('rat.index'), 'key' => 'rat'],

@@ -1,22 +1,46 @@
 @extends('layouts.app')
 
-@section('title', 'Categorías de Datos - SGPD COAC')
-@section('active_key', 'data_category')
-@section('h1', 'Gestión de Categorías de Datos')
-@section('subtitle', 'Administrar categorías de datos personales')
+@section('title', 'Países - SGPD COAC')
+@section('active_key', 'countries')
+@section('h1', 'Gestión de Países')
+@section('subtitle', 'Administrar países para transferencias internacionales')
 
 @section('content')
 <div class="space-y-6">
+    <!-- Flash Messages -->
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            confirmButtonText: 'Aceptar',
+            timer: 3000,
+            timerProgressBar: true
+        });
+    </script>
+@endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="space-y-1">
-            <h2 class="text-2xl font-bold text-gray-900">Categorías de Datos</h2>
-            <p class="text-sm text-gray-600">Lista de categorías disponibles</p>
+            <h2 class="text-2xl font-bold text-gray-900">Países</h2>
+            <p class="text-sm text-gray-600">Lista de países disponibles para transferencias</p>
         </div>
-        <a href="{{ route('privacy.data_category.create') }}"
+        <a href="{{ route('privacy.countries.create') }}"
            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 transition-colors">
             <i class="fas fa-plus"></i>
-            Nueva Categoría
+            Nuevo País
         </a>
     </div>
 
@@ -27,13 +51,10 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Código
+                            Código ISO
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Nombre
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Sensible
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Acciones
@@ -41,28 +62,25 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach($dataCategories as $dc)
+                    @foreach($countries as $country)
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            {{ $dc->code }}
+                            {{ $country->iso_code }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $dc->name }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {{ $dc->is_sensitive ? 'Sí' : 'No' }}
+                            {{ $country->name }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                            <a href="{{ route('privacy.data_category.edit', $dc->data_cat_id) }}"
+                            <a href="{{ route('privacy.countries.edit', $country->country_id) }}"
                                class="text-indigo-600 hover:text-indigo-900">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
-                            <form method="POST" action="{{ route('privacy.data_category.destroy', $dc->data_cat_id) }}"
-                                  class="inline-block" id="delete-form-{{ $dc->data_cat_id }}">
+                            <form method="POST" action="{{ route('privacy.countries.destroy', $country->country_id) }}"
+                                  class="inline-block" id="delete-form-{{ $country->country_id }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button"
-                                        onclick="confirmDelete({{ $dc->data_cat_id }}, '{{ $dc->name }}')"
+                                        onclick="confirmDelete({{ $country->country_id }}, '{{ $country->name }}')"
                                         class="text-red-600 hover:text-red-900">
                                     <i class="fas fa-trash"></i> Eliminar
                                 </button>
@@ -80,7 +98,7 @@
 function confirmDelete(id, name) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: `¿Deseas eliminar la categoría "${name}"?`,
+        text: `¿Deseas eliminar el país "${name}"?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -93,25 +111,5 @@ function confirmDelete(id, name) {
         }
     });
 }
-
-@if(session('success'))
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: '{{ session('success') }}',
-        confirmButtonText: 'Aceptar',
-        timer: 3000,
-        timerProgressBar: true
-    });
-@endif
-
-@if(session('error'))
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: '{{ session('error') }}',
-        confirmButtonText: 'Aceptar'
-    });
-@endif
 </script>
 @endsection

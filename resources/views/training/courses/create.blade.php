@@ -1,34 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo Curso')
-@section('active_key', 'courses')
+@section('title', 'Nuevo Curso de Capacitación - SGPD COAC')
+@section('active_key', 'training')
+@section('h1', 'Nuevo Curso de Capacitación')
+@section('subtitle', 'Crear nuevo curso de formación')
 
 @section('content')
-<div class="flex justify-center mt-10">
-    <div class="w-full max-w-xl">
-
-        {{-- Card --}}
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
-
-            {{-- Header --}}
-            <div class="px-6 py-4 border-b border-gray-200 flex items-center gap-2">
-                <div class="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 14l9-5-9-5-9 5 9 5z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.955 11.955 0 0112 21
-                                 a11.955 11.955 0 01-6.824-3.943
-                                 a12.083 12.083 0 01.665-6.479L12 14z"/>
-                    </svg>
-                </div>
-                <h2 class="text-lg font-semibold text-gray-900">
-                    Nuevo Curso
-                </h2>
-            </div>
-
-            {{-- Body --}}
-            <div class="p-6">
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <form id="frm_course"
                       method="POST"
                       action="{{ route('training.courses.store') }}"
@@ -102,9 +81,32 @@
                 </form>
             </div>
         </div>
-
     </div>
 </div>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            confirmButtonText: 'Aceptar',
+            timer: 3000,
+            timerProgressBar: true
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
 @endsection
 @push('scripts')
 {{-- jQuery --}}
@@ -151,4 +153,4 @@ $(function () {
 
 });
 </script>
-@endpush
+@endsection

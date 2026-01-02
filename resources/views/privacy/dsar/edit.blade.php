@@ -1,25 +1,26 @@
 @extends('layouts.app')
 
-@section('title', 'Editar DSAR')
+@section('title', 'Editar Solicitud DSAR - SGPD COAC')
 @section('active_key', 'dsar')
+@section('h1', 'Editar Solicitud DSAR')
+@section('subtitle', 'Modificar solicitud de derechos ARCO')
 
 @section('content')
-<div class="bg-white border rounded p-5">
-    <h2 class="text-lg font-bold mb-4">Editar Solicitud DSAR</h2>
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        {{-- ERRORES BACKEND --}}
+        @if ($errors->any())
+            <div class="bg-red-100 border border-red-300 text-red-700 p-3 rounded mb-4">
+                <strong>Hay errores en el formulario:</strong>
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $e)
+                        <li>{{ $e }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    {{-- ERRORES BACKEND --}}
-    @if ($errors->any())
-        <div class="bg-red-100 border border-red-300 text-red-700 p-3 rounded mb-4">
-            <strong>Hay errores en el formulario:</strong>
-            <ul class="list-disc list-inside">
-                @foreach ($errors->all() as $e)
-                    <li>{{ $e }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <div x-data="{ tab: 'details', showEvidence: false }">
+        <div x-data="{ tab: 'details', showEvidence: false }">
 
         {{-- FORMULARIO DSAR --}}
         <form method="POST" action="{{ route('dsar.update', $dsar) }}">
@@ -185,10 +186,29 @@
     </div>
 </div>
 
-{{-- FONT AWESOME --}}
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            confirmButtonText: 'Aceptar',
+            timer: 3000,
+            timerProgressBar: true
+        });
+    </script>
+@endif
 
+@if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
 @endsection
 
 

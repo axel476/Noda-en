@@ -104,11 +104,16 @@ class OrgController extends Controller
                 ->with('error', 'No puedes eliminar la organización activa.');
         }
 
-        $org->delete();
-
-        return redirect()
-            ->route('orgs.index')
-            ->with('success', 'Organización eliminada correctamente.');
+        try {
+            $org->delete();
+            return redirect()
+                ->route('orgs.index')
+                ->with('success', 'Organización eliminada correctamente.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('orgs.index')
+                ->with('error', 'No se puede eliminar la organización, está en uso por otros registros.');
+        }
     }
 
     /**

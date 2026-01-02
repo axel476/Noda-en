@@ -132,8 +132,12 @@ class PermissionController extends Controller
     public function destroy(string $id)
     {
         $permission = Permission::findOrFail($id);
-        $permission->delete();
         
-        return redirect()->route('permissions.index')->with('message', 'Permiso eliminado exitosamente');
+        try {
+            $permission->delete();
+            return redirect()->route('permissions.index')->with('message', 'Permiso eliminado exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->route('permissions.index')->with('error', 'No se puede eliminar el permiso, está en uso.');
+        }
     }
 }

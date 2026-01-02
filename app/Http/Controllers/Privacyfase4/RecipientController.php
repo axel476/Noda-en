@@ -121,13 +121,22 @@ class RecipientController extends Controller
     public function destroy($id)
     {
         $recipient = Recipient::findOrFail($id);
-        $recipient->delete();
-
-        return redirect()
-            ->route('recipients.index')
-            ->with([
-                'alert' => 'deleted',
-                'message' => 'El destinatario fue eliminado correctamente.'
-            ]);
+        
+        try {
+            $recipient->delete();
+            return redirect()
+                ->route('recipients.index')
+                ->with([
+                    'alert' => 'deleted',
+                    'message' => 'El destinatario fue eliminado correctamente.'
+                ]);
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('recipients.index')
+                ->with([
+                    'alert' => 'error',
+                    'message' => 'No se puede eliminar el destinatario, está en uso por transferencias.'
+                ]);
+        }
     }
 }

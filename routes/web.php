@@ -8,6 +8,7 @@ use App\Http\Controllers\Privacy\DataSubjectController;
 use App\Http\Controllers\Dsar\DsarRequestController;
 use App\Http\Controllers\Dsar\DsarEvidenceController;
 use App\Http\Controllers\Privacy\DataCategoryController;
+use App\Http\Controllers\Privacy\CountryController;
 use App\Http\Controllers\Audit\AuditController;
 use App\Http\Controllers\Audit\ControlController;
 use App\Http\Controllers\Audit\AuditFindingController;
@@ -79,6 +80,7 @@ Route::post('dsar/{dsar}/evidence', [DsarEvidenceController::class, 'store'])->n
 // Privacy Routes
 Route::prefix('privacy')->name('privacy.')->group(function () {
     Route::resource('data_category', DataCategoryController::class);
+    Route::resource('countries', CountryController::class);
 });
 // Rutas Fase 2
 Route::resource('users', UserController::class);

@@ -1,30 +1,31 @@
 @extends('layouts.app')
 
-@section('title', 'Nuevo DSAR')
+@section('title', 'Nueva Solicitud DSAR - SGPD COAC')
 @section('active_key', 'dsar')
+@section('h1', 'Nueva Solicitud DSAR')
+@section('subtitle', 'Crear nueva solicitud de derechos ARCO')
 
 @section('content')
-<div class="bg-white border rounded p-5">
-    <h2 class="text-lg font-bold mb-4">Nueva Solicitud DSAR</h2>
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        {{-- ERRORES BACKEND --}}
+        @if ($errors->any())
+            <div class="bg-red-100 border border-red-300 text-red-700 p-3 rounded mb-4">
+                <strong>Hay errores en el formulario:</strong>
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $e)
+                        <li>{{ $e }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-    {{-- ERRORES BACKEND --}}
-    @if ($errors->any())
-        <div class="bg-red-100 border border-red-300 text-red-700 p-3 rounded mb-4">
-            <strong>Hay errores en el formulario:</strong>
-            <ul class="list-disc list-inside">
-                @foreach ($errors->all() as $e)
-                    <li>{{ $e }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        {{-- FORMULARIO DSAR --}}
+        <form method="POST" action="{{ route('dsar.store') }}" id="dsarForm">
+            @csrf
+            <input type="hidden" name="status" value="PENDING">
 
-    {{-- FORMULARIO DSAR --}}
-    <form method="POST" action="{{ route('dsar.store') }}" id="dsarForm">
-        @csrf
-        <input type="hidden" name="status" value="PENDING">
-
-        <div x-data="{ tab: 'details' }">
+            <div x-data="{ tab: 'details' }">
             {{-- TABS --}}
             <div class="flex border-b mb-4">
                 <button type="button"
@@ -129,8 +130,27 @@
     </form>
 </div>
 
-{{-- FONT AWESOME --}}
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            confirmButtonText: 'Aceptar',
+            timer: 3000,
+            timerProgressBar: true
+        });
+    </script>
+@endif
 
+@if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
 @endsection
